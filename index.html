@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=7e6a7441-fbd0-4830-b5b0-7520d147fed1
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daivik Darbar — Gaffers Notebook</title>
+<meta name="description" content="Sports writer and data analyst based in Melbourne, studying a Master of Business (Sport Management) at Deakin University. Founder of Gaffers Notebook." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #131313;
+    --ink: #f5f3ef;
+    --ink-dim: #8a8780;
+    --ink-faint: #4a4844;
+    --line: #1f1e1c;
+    --red: #ff3128;
+    --green: #6b8e54;
+    --amber: #d4923a;
+    --chalk: #fafafa;
+
+    --font-display: 'Boldonse', 'Impact', sans-serif;
+    --font-serif: 'Fraunces', Georgia, serif;
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+    --max-w: 1320px;
+    --gutter: 40px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    width: 100%;
+  }
+
+  /* grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  a { color: inherit; }
+
+  /* ─── TICKER ─── */
+  .ticker {
+    background: var(--red);
+    color: var(--bg);
+    padding: 9px 0;
+    overflow: hidden;
+    z-index: 20;
+    position: relative;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: scroll-x 60s linear infinite;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: max-content;
+  }
+  .ticker-item { display: inline-flex; align-items: center; gap: 12px; }
+  .ticker-item::after { content: "●"; opacity: 0.45; font-size: 8px; }
+  @keyframes scroll-x {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px var(--gutter);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-dot {
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:0.5; transform:scale(1.3); }
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    align-items: center;
+  }
+  .nav-links a { color: var(--ink-dim); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a::before {
+    content: attr(data-num);
+    color: var(--red);
+    margin-right: 8px;
+    font-size: 10px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 92vh;
+    padding: 60px 0 80px;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,49,40,0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-inner {
+    width: 100%;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 40px;
+    align-items: end;
+    position: relative;
+    z-index: 2;
+  }
+  .vol-marker {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-left: 1px solid var(--line);
+    padding-left: 12px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  .vol-marker span { color: var(--red); }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .live {
+    color: var(--red);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(72px, 13vw, 200px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .hero h1 .line { display: block; overflow: hidden; padding-bottom: 0.04em; }
+  .hero h1 .line span {
+    display: inline-block;
+    animation: reveal-up 1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .hero h1 .line:nth-child(2) span { animation-delay: 0.15s; }
+  .hero h1 .em {
+    color: var(--red);
+    font-style: italic;
+    font-family: var(--font-serif);
+    font-weight: 300;
+  }
+  @keyframes reveal-up {
+    from { transform: translateY(110%); }
+    to   { transform: translateY(0); }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(19px, 2.1vw, 27px);
+    color: var(--ink);
+    max-width: 680px;
+    line-height: 1.35;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fade-in 1s 0.6s forwards;
+  }
+  .hero-byline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fade-in 1s 0.9s forwards;
+  }
+  .hero-byline strong { color: var(--ink); font-weight: 500; }
+  @keyframes fade-in { to { opacity: 1; } }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 30px; right: var(--gutter);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    z-index: 3;
+  }
+  .scroll-cue::after {
+    content: "";
+    display: block;
+    width: 1px; height: 40px;
+    background: var(--ink-dim);
+    margin: 12px auto;
+    animation: scroll-bar 2s ease-in-out infinite;
+  }
+  @keyframes scroll-bar {
+    0%,100% { transform: scaleY(0); transform-origin: top; }
+    50%      { transform: scaleY(1); transform-origin: top; }
+  }
+
+  /* ─── STATS ─── */
+  .stats-wrap {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 32px 0;
+  }
+  .stat {
+    padding: 0 32px;
+    border-left: 1px solid var(--line);
+  }
+  .stat:first-child { border-left: none; padding-left: 0; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+  }
+
+  /* ─── SECTION ─── */
+  section { padding: 100px 0; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 32px;
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    padding-bottom: 10px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5.5vw, 72px);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+  }
+  .section-title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--red);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .section-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding-bottom: 10px;
+    text-align: right;
+    max-width: 240px;
+    line-height: 1.5;
+  }
+
+  /* ─── ABOUT ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* Portrait */
+  .portrait-area {
+    aspect-ratio: 1000 / 1405;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .portrait-caption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 14px;
+    text-align: right;
+  }
+
+  /* Education card */
+  .edu-card {
+    border: 1px solid var(--line);
+    padding: 20px 24px;
+    margin-top: 20px;
+    position: relative;
+  }
+  .edu-card::before {
+    content: "Education";
+    position: absolute;
+    top: -9px; left: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--red);
+    background: var(--bg);
+    padding: 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .edu-degree {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .edu-place {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .edu-divider { height: 1px; background: var(--line); margin: 18px 0; }
+  .edu-honors {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* About body */
+  .about-body p {
+    font-size: 18px;
+    line-height: 1.62;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .about-body p:first-child::first-letter {
+    font-family: var(--font-display);
+    font-size: 80px;
+    float: left;
+    line-height: 0.8;
+    padding: 10px 12px 0 0;
+    color: var(--red);
+  }
+  .about-body p strong { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--red); }
+
+  .beat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .beat-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    border-radius: 999px;
+  }
+  .beat-tag.red { border-color: var(--red); color: var(--red); }
+  .beat-tag.dim { color: var(--ink-dim); }
+
+  /* ─── FEATURED ─── */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .cover-visual {
+    aspect-ratio: 4 / 5;
+    background:
+      radial-gradient(ellipse at top, rgba(255,49,40,0.3) 0%, transparent 50%),
+      linear-gradient(135deg, #1a0807 0%, #2a0a08 50%, #0a0a0a 100%);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent 0, transparent 4px, rgba(255,255,255,0.02) 4px, rgba(255,255,255,0.02) 5px);
+  }
+  .cv-label {
+    position: absolute;
+    top: 24px; left: 24px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .cv-tag {
+    position: absolute;
+    top: 24px; right: 24px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--red);
+    color: var(--bg);
+    padding: 5px 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .cv-num {
+    position: absolute;
+    bottom: 0; right: 24px;
+    font-family: var(--font-display);
+    font-size: 220px;
+    line-height: 0.72;
+    color: var(--red);
+    opacity: 0.88;
+    transform: translateY(14%);
+  }
+
+  .feat-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .feat-meta .acc { color: var(--red); }
+  .feat-title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(34px, 4.5vw, 58px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin-bottom: 22px;
+  }
+  .feat-title em { font-style: italic; color: var(--red); font-weight: 400; }
+  .feat-excerpt {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-dim);
+    margin-bottom: 32px;
+    max-width: 540px;
+  }
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ink);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .cta-link:hover { color: var(--red); border-color: var(--red); }
+  .cta-link::after { content: "→"; transition: transform 0.3s; }
+  .cta-link:hover::after { transform: translateX(6px); }
+
+  /* ─── ARTICLES ─── */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { color: var(--ink); border-color: var(--ink-dim); }
+  .filter-btn.active { background: var(--red); border-color: var(--red); color: var(--bg); }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .article {
+    background: var(--bg);
+    padding: 30px 26px;
+    display: flex;
+    flex-direction: column;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background 0.25s;
+    min-height: 290px;
+  }
+  .article:hover { background: var(--bg-elev); }
+  .article-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  .article-num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.15em; }
+  .article-sport {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    flex-shrink: 0;
+  }
+  .s-football { color: var(--green); }
+  .s-f1      { color: var(--red); }
+  .s-cricket { color: var(--amber); }
+  .s-multi   { color: var(--ink-dim); }
+
+  .article h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+  .article:hover h3 { color: var(--red); }
+  .article-dek { font-size: 13.5px; color: var(--ink-dim); line-height: 1.45; flex: 1; }
+  .article-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .arr { color: var(--ink-dim); transition: transform 0.3s, color 0.2s; }
+  .article:hover .arr { color: var(--red); transform: translateX(4px); }
+  .article.hidden { display: none; }
+
+  /* ─── EXPERIENCE ─── */
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 60px;
+  }
+  .exp-card {
+    background: var(--bg);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+  .exp-period {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    padding-top: 3px;
+    flex-shrink: 0;
+  }
+  .exp-current {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    background: var(--red);
+    color: var(--bg);
+    padding: 2px 7px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .exp-current.upcoming { background: var(--amber); }
+  .exp-role {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .exp-company {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .exp-company span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  .exp-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-dim);
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .exp-desc li { list-style: none; padding: 4px 0; padding-left: 14px; position: relative; }
+  .exp-desc li::before { content: "—"; position: absolute; left: 0; color: var(--red); font-size: 12px; }
+  .exp-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+  .exp-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+  }
+
+  /* Projects sub-section */
+  .sub-head {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sub-head::before { content: "//"; color: var(--red); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .project {
+    background: var(--bg-elev);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-year {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .project h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .project p {
+    font-size: 13.5px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+
+  /* ─── CONTACT ─── */
+  .contact-section {
+    text-align: center;
+    padding: 140px 0;
+    border-top: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-section::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(255,49,40,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .contact-pre {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .contact-headline {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .contact-headline em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--red);
+    text-transform: none;
+  }
+  .contact-email {
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 26px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 2px solid var(--red);
+    padding-bottom: 4px;
+    margin-bottom: 48px;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .contact-email:hover { color: var(--red); }
+  .socials {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  .socials a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .socials a:hover { color: var(--ink); }
+  .socials a::before { content: "↗"; color: var(--red); }
+
+  /* ─── FOOTER ─── */
+  footer { border-top: 1px solid var(--line); }
+  .footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 34px var(--gutter);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-inner em { color: var(--ink-dim); font-style: normal; }
+
+  /* ─── SKELETON LOADERS ─── */
+  .skel {
+    background: linear-gradient(90deg, var(--bg-elev) 25%, #1c1c1c 50%, var(--bg-elev) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+  .skel-sm    { width: 110px; height: 10px; }
+  .skel-tag   { width: 72px;  height: 20px; border-radius: 2px; }
+  .skel-title { width: 100%;  height: 18px; }
+  .skel-body  { width: 100%;  height: 12px; }
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .articles-empty {
+    grid-column: 1 / -1;
+    padding: 60px 40px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+  .articles-empty a { color: var(--red); text-decoration: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .exp-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 900px) {
+    :root { --gutter: 22px; }
+    .nav-links { gap: 16px; font-size: 11px; }
+    .nav-links a::before { display: none; }
+    section { padding: 70px 0; }
+    .hero { padding: 40px 0 60px; min-height: auto; }
+    .hero-inner { grid-template-columns: 28px 1fr; gap: 16px; }
+    .vol-marker { font-size: 9px; padding-left: 8px; }
+    .stats { grid-template-columns: repeat(2, 1fr); padding: 24px 0; gap: 32px 0; }
+    .stat { padding: 0 16px; }
+    .stat:nth-child(odd) { border-left: none; padding-left: 0; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .featured-grid { grid-template-columns: 1fr; gap: 40px; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .section-head { grid-template-columns: 1fr; gap: 10px; align-items: flex-start; }
+    .section-num, .section-sub { padding-bottom: 0; text-align: left; max-width: none; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .scroll-cue { display: none; }
+    .cv-num { font-size: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Gaffers Notebook — Sports Writing by Daivik Darbar</span>
+    <span class="ticker-item">New — The Answer Was Always in the Building: Carrick's Long Way Home</span>
+    <span class="ticker-item">Why Audi entering F1 in 2026 makes perfect sense</span>
+    <span class="ticker-item">The Ruben Amorim Verdict</span>
+    <span class="ticker-item">500+ followers · 10K weekly impressions on Medium</span>
+    <span class="ticker-item">Master of Business (Sport Management) · Deakin University · Melbourne</span>
+    <!-- loop -->
+    <span class="ticker-item">Gaffers Notebook — Sports Writing by Daivik Darbar</span>
+    <span class="ticker-item">New — The Answer Was Always in the Building: Carrick's Long Way Home</span>
+    <span class="ticker-item">Why Audi entering F1 in 2026 makes perfect sense</span>
+    <span class="ticker-item">The Ruben Amorim Verdict</span>
+    <span class="ticker-item">500+ followers · 10K weekly impressions on Medium</span>
+    <span class="ticker-item">Master of Business (Sport Management) · Deakin University · Melbourne</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="brand"><span class="brand-dot"></span>Gaffers Notebook</a>
+    <ul class="nav-links">
+      <li><a href="#about" data-num="01">About</a></li>
+      <li><a href="#featured" data-num="02">Featured</a></li>
+      <li><a href="#articles" data-num="03">Articles</a></li>
+      <li><a href="#experience" data-num="04">Experience</a></li>
+      <li><a href="#contact" data-num="05">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="vol-marker">Portfolio · <span>2026</span> · Daivik Darbar</div>
+    <div>
+      <div class="hero-meta">
+        <span class="live">Open to sports industry roles in Australia</span>
+        <span>Sports writer · Data analyst</span>
+        <span>Melbourne, Australia</span>
+      </div>
+      <h1>
+        <span class="line"><span>Gaffers</span></span>
+        <span class="line"><span>Note<span class="em">book</span>.</span></span>
+      </h1>
+      <p class="hero-tagline">Sports isn't just entertainment — it's a constant puzzle of strategy, speed, and skill. Written by someone who played the game, studied the business, and can't stop asking why.</p>
+      <p class="hero-byline">Written &amp; curated by <strong>Daivik Darbar</strong> — Master of Business (Sport Management) · Deakin University, Melbourne</p>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</header>
+
+<!-- STATS -->
+<div class="stats-wrap">
+  <div class="container">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="stat-articles">—</div>
+        <div class="stat-label">Articles Published</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">07</div>
+        <div class="stat-label">Roles &amp; Internships</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Medium Followers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10K</div>
+        <div class="stat-label">Weekly Impressions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">[01]</span>
+      <h2 class="section-title">About <em>Me</em></h2>
+      <span class="section-sub">Sports writer · Data analyst · Goalkeeper</span>
+    </div>
+    <div class="about-grid">
+      <div>
+        <div class="portrait-area"><img src="daivik-card.jpg" width="1000" height="1405" alt="Daivik Darbar holding an NFL football, on his Topps NFL card"></div>
+        <p class="portrait-caption">Daivik Darbar · Melbourne, Australia</p>
+        <div class="edu-card">
+          <div class="edu-degree">Master of Business (Sport Management)</div>
+          <div class="edu-place">Deakin University · Melbourne · In progress</div>
+          <div class="edu-divider"></div>
+          <div class="edu-degree">BBA Hons. Business Analytics<br><em style="font-style:italic; font-weight:300; font-size:15px;">International Business (Minor)</em></div>
+          <div class="edu-place">PES University · Bengaluru · Aug 2022 – May 2026</div>
+          <div class="edu-place" style="margin-top:4px;">CGPA: 8.20 / 10 · Coursework: SAS, Tableau, Financial Analytics, Project Management</div>
+          <div class="edu-honors">DAC Scholarship (6 semesters) · Prof. CNR Rao Scholar — Top 20%, Partial-Ride Tuition</div>
+        </div>
+      </div>
+      <div class="about-body">
+        <p>Sports isn't just entertainment for me — it's a constant puzzle of strategy, speed, and skill. I'm <strong>Daivik Darbar</strong>, and I write under the pen name Gaffers Notebook, exploring tactics, governance, business, and culture across the sporting landscape — from the pitch to the pit lane.</p>
+        <p>I aim to bring clarity to complex topics often overlooked in mainstream coverage. Whether it's dissecting team strategies, analysing competitive regulations, or highlighting overlooked narratives, I bring data, context, and curiosity to stories that deserve more than a headline.</p>
+        <p>Outside writing, I've spent time in sports operations, content strategy, market research, and analytics. I'm now based in <strong>Melbourne</strong>, studying a Master of Business (Sport Management) at Deakin and working towards a career in the Australian sports industry, where sport, data, and storytelling meet. I also played competitive football as a goalkeeper, <strong>representing Kickstart FC U-16 in Nepal</strong> against Red Star FC Jhapa and the Nepal U-16 national team in 2017 — which gives me a ground-level appreciation of the game I write about.</p>
+        <div class="beat-tags">
+          <span class="beat-tag red">Manchester United</span>
+          <span class="beat-tag">Football Governance</span>
+          <span class="beat-tag">Formula 1</span>
+          <span class="beat-tag">Indian Football</span>
+          <span class="beat-tag">Tactical Analysis</span>
+          <span class="beat-tag">Sport Management</span>
+          <span class="beat-tag dim">Python · SQL · R</span>
+          <span class="beat-tag dim">SAS · Tableau</span>
+          <span class="beat-tag dim">Machine Learning</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section id="featured">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">[02]</span>
+      <h2 class="section-title">Featured <em>Work</em></h2>
+      <span class="section-sub">Latest published piece</span>
+    </div>
+    <div class="featured-grid">
+      <div class="cover-visual">
+        <div class="cv-label">Long Read · Manchester United</div>
+        <div class="cv-tag">MUFC</div>
+        <div class="cv-num">08</div>
+      </div>
+      <div>
+        <div class="feat-meta">
+          <span class="acc">Issue 08</span>
+          <span>Aug 2026</span>
+          <span>9 min read</span>
+          <span>Football</span>
+        </div>
+        <h3 class="feat-title">The Answer Was Always <em>in the Building</em> — Michael Carrick's long way home.</h3>
+        <p class="feat-excerpt">Manchester United spent four years chasing other managers before turning back to Michael Carrick. What changed after his return in January 2026, and why the sample is still too small to call.</p>
+        <a href="https://gaffersnotebook.medium.com/the-answer-was-always-in-the-building-michael-carricks-long-way-home-090a74c8a069" class="cta-link" target="_blank" rel="noopener">Read on Medium</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section id="articles">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">[03]</span>
+      <h2 class="section-title">My <em>Articles</em></h2>
+      <span class="section-sub" id="articles-sub">Loading from Medium…</span>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="football">Football</button>
+      <button class="filter-btn" data-filter="f1">Motorsport</button>
+    </div>
+    <div class="articles-grid" id="articles-grid">
+      <!-- JS populates this from Medium RSS -->
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">[04]</span>
+      <h2 class="section-title">Work <em>Experience</em></h2>
+      <span class="section-sub">7 roles · 3 projects</span>
+    </div>
+
+    <div class="exp-grid">
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">Freelance</div>
+          <span class="exp-current upcoming">Upcoming</span>
+        </div>
+        <div class="exp-role">Cricket Data Reporter</div>
+        <div class="exp-company">Decimal Data <span>· Melbourne, Australia</span></div>
+        <ul class="exp-desc">
+          <li>Lined up to report match data for Cricket Australia across all BBL and WBBL games in Victoria</li>
+          <li>Previously handled scorekeeping, data entry and MC duties at Badminton Geelong's Yonex Open</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Cricket</span>
+          <span class="exp-tag">BBL / WBBL</span>
+          <span class="exp-tag">Sports Data</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">2026</div>
+        </div>
+        <div class="exp-role">Customer Experience Staff</div>
+        <div class="exp-company">Spark Event Group <span>· Melbourne, Australia</span></div>
+        <ul class="exp-desc">
+          <li>Contract customer experience role at the NFL Kickoff event in Melbourne (Sep 2026), across multiple activations and sponsor activities</li>
+          <li>Patron interaction and hospitality, and registering scores alongside the tech head, with some team management on the floor</li>
+          <li>Merchandising shifts at Olympic Boulevard concerts, including Tame Impala, Olivia Dean and Sonu Nigam</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Event Operations</span>
+          <span class="exp-tag">Customer Experience</span>
+          <span class="exp-tag">Merchandise</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">Jan 2026 — Jun 2026</div>
+        </div>
+        <div class="exp-role">Marketing &amp; Operations Analyst</div>
+        <div class="exp-company">Auraa Brand Consultants Pvt. Ltd. <span>· Mumbai, India</span></div>
+        <ul class="exp-desc">
+          <li>Dissertation research on how AI and automation can improve marketing workflows inside an agency, using observation, an employee survey and tested changes</li>
+          <li>Built an automated workflow that reads client briefs, uses AI to list the requirements, and gives the design head one review before work moves on, cutting repeated back-and-forth</li>
+          <li>Tested the brief-reading AI on randomised briefs to around 85–90% accuracy; later moved the build from n8n to ActivePieces to keep running costs down</li>
+          <li>Reported findings to the agency's director and CEO</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">AI &amp; Automation</span>
+          <span class="exp-tag">Workflow Design</span>
+          <span class="exp-tag">Research</span>
+          <span class="exp-tag">n8n</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">Jan 2026 — Jun 2026</div>
+        </div>
+        <div class="exp-role">Operations &amp; Marketing Intern</div>
+        <div class="exp-company">Knight Rider Sports <span>· Mumbai, India</span></div>
+        <ul class="exp-desc">
+          <li>Coordinated fan engagement activations on matchdays — merchandise &amp; ticket distribution end-to-end</li>
+          <li>Travelled solo to Delhi to manage a content shoot with a KKR player for a sports broadcaster, as the point of contact between player and broadcaster</li>
+          <li>Ran merchandise stock through the team's storeroom: receiving, storing and dispatching batches by location</li>
+          <li>Contributed to digital strategy by analysing platform features and preparing improvement reports</li>
+          <li>Managed content storage systems for large volumes of production footage</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Sports Operations</span>
+          <span class="exp-tag">Fan Engagement</span>
+          <span class="exp-tag">Content Production</span>
+          <span class="exp-tag">Digital Strategy</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">Feb 2025 — Sep 2025</div>
+        </div>
+        <div class="exp-role">HR Analyst Intern</div>
+        <div class="exp-company">Excelfore <span>· Bengaluru, India</span></div>
+        <ul class="exp-desc">
+          <li>Built ML models (Logistic Regression, Random Forest, Decision Tree) to predict employee attrition</li>
+          <li>Identified key attrition drivers using feature importance analysis — satisfaction &amp; tenure</li>
+          <li>Pre-processed data with label encoding and scaling; visualised outputs with decision trees and SPRT tests</li>
+          <li>Presented findings to the head of HR and the country head</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">Machine Learning</span>
+          <span class="exp-tag">HR Analytics</span>
+          <span class="exp-tag">Data Visualisation</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">May 2024 — Jul 2024</div>
+        </div>
+        <div class="exp-role">Business Development &amp; Market Research Intern</div>
+        <div class="exp-company">Address Maker <span>· Bengaluru, India</span></div>
+        <ul class="exp-desc">
+          <li>Developed and executed social media campaigns to enhance brand visibility</li>
+          <li>Conducted market research to identify audience segments and improve targeting</li>
+          <li>Delivered insights on online engagement and content strategy improvements</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Market Research</span>
+          <span class="exp-tag">Social Media</span>
+          <span class="exp-tag">Brand Strategy</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">Nov 2023 — Mar 2024</div>
+        </div>
+        <div class="exp-role">Content Strategy &amp; Marketing Intern</div>
+        <div class="exp-company">TorchIt India Pvt. Ltd. <span>· Bengaluru, India</span></div>
+        <ul class="exp-desc">
+          <li>Created structured content plans to promote assistive technology products</li>
+          <li>Managed Instagram and X (Twitter) handles to build brand exposure</li>
+          <li>Applied data-driven insights to increase visibility during Purple Fest in Goa</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Content Strategy</span>
+          <span class="exp-tag">Social Media</span>
+          <span class="exp-tag">Campaign Management</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-period">Jun 2022 — Aug 2022</div>
+        </div>
+        <div class="exp-role">Summer &amp; Marketing Intern</div>
+        <div class="exp-company">Auraa Brand Consultants Pvt. Ltd. <span>· Mumbai, India</span></div>
+        <ul class="exp-desc">
+          <li>Supported website redevelopment and brand communication initiatives for clients</li>
+          <li>Conducted target audience analysis and assisted in campaign design</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Branding</span>
+          <span class="exp-tag">Campaign Design</span>
+          <span class="exp-tag">Market Research</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Projects -->
+    <div class="sub-head">Selected Projects</div>
+    <div class="projects-grid">
+
+      <div class="project">
+        <div class="project-year">Jan 2026 — Ongoing</div>
+        <h4>Football Match Prediction Tool</h4>
+        <p>Live prediction tool using API-driven league data. Applied rule-based analytics using form, goals, table position, and home/away performance. Built with transparent feature contributions and user-facing explanations.</p>
+        <div class="project-tags">
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">API Integration</span>
+          <span class="exp-tag">Sports Analytics</span>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-year">Feb 2025 — Jul 2025</div>
+        <h4>Capstone Research — Employee Attrition Models</h4>
+        <p>Developed predictive models to identify attrition trends and improve retention strategies. Combined feature engineering, model comparison, and business-oriented recommendations.</p>
+        <div class="project-tags">
+          <span class="exp-tag">Machine Learning</span>
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">Research</span>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-year">Aug 2022 — Ongoing</div>
+        <h4>Gaffers Notebook — Sports Writing Publication</h4>
+        <p>8 published football and motorsport articles on Medium. Grown to 500+ followers and 10K weekly impressions organically through consistent, analytical long-form writing.</p>
+        <div class="project-tags">
+          <span class="exp-tag">Sports Journalism</span>
+          <span class="exp-tag">Medium</span>
+          <span class="exp-tag">Audience Building</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="contact-pre">[05] · Get in Touch</div>
+    <h2 class="contact-headline">Let's <em>Connect</em></h2>
+    <a href="mailto:daivikdarbar@gmail.com" class="contact-email">daivikdarbar@gmail.com</a>
+    <div class="socials">
+      <a href="https://x.com/DaxMUFC" target="_blank" rel="noopener">Twitter / X</a>
+      <a href="https://www.linkedin.com/in/daivik-darbar/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://gaffersnotebook.medium.com" target="_blank" rel="noopener">Medium</a>
+      <a href="https://sites.google.com/view/the-gaffers-notebook/home" target="_blank" rel="noopener">Old Site</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>Gaffers Notebook · Daivik Darbar · 2026 <em>— Sports writing &amp; personal portfolio. Set in Boldonse, Fraunces &amp; JetBrains Mono.</em></div>
+    <div>© 2026 Daivik Darbar</div>
+  </div>
+</footer>
+
+<script>
+  // ─────────────────────────────────────────────────────────────────
+  // MEDIUM RSS CONFIG
+  // To update: change MEDIUM_HANDLE to your Medium username
+  // ─────────────────────────────────────────────────────────────────
+  const MEDIUM_HANDLE = '@gaffersnotebook';
+  const FEED_URL  = `https://medium.com/feed/${MEDIUM_HANDLE}`;
+  const API_URL   = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(FEED_URL)}`;
+
+  let allArticles  = [];   // full cached feed
+  let activeFilter = 'all';
+
+  // ── Helpers ──────────────────────────────────────────────────────
+  function stripHtml(html) {
+    const el = document.createElement('div');
+    el.innerHTML = html;
+    return el.textContent || el.innerText || '';
+  }
+
+  function readTime(content) {
+    const words = stripHtml(content).trim().split(/\s+/).length;
+    return `${Math.max(1, Math.ceil(words / 220))} min read`;
+  }
+
+  function fmtDate(str) {
+    return new Date(str).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+  }
+
+  function excerpt(desc) {
+    const clean = stripHtml(desc)
+      .replace(/^Member-only story\s*/i, '')
+      .replace(/\n+/g, ' ')
+      .trim();
+    return clean.length > 175 ? clean.slice(0, 172) + '…' : clean;
+  }
+
+  function classifySport(item) {
+    const txt = [item.title, ...(item.categories || [])].join(' ').toLowerCase();
+    if (/f1|formula.?1|motorsport|pit.lane|racing|audi|ferrari|mclaren|verstappen/.test(txt)) return 'f1';
+    if (/football|soccer|premier|united|mufc|tactic|aiff|fsdl|indian.foot|arsenal|chelsea|liverpool|amorim|carrick|manchester|city|governance/.test(txt)) return 'football';
+    return 'multi';
+  }
+
+  const SPORT_LABEL = { football: 'Football', f1: 'Motorsport', multi: 'Sport' };
+
+  // ── Build a single article card ───────────────────────────────────
+  function buildCard(item, num) {
+    const sport = item._sport;
+    const a = document.createElement('a');
+    a.className    = 'article';
+    a.dataset.sport = sport;
+    a.href         = item.link;
+    a.target       = '_blank';
+    a.rel          = 'noopener';
+    a.innerHTML    = `
+      <div class="article-top">
+        <div class="article-num">No.${String(num).padStart(2,'0')} · ${fmtDate(item.pubDate)}</div>
+        <span class="article-sport s-${sport}">${SPORT_LABEL[sport]}</span>
+      </div>
+      <h3>${item.title}</h3>
+      <p class="article-dek">${excerpt(item.description)}</p>
+      <div class="article-foot">
+        <span>${item._read || (item.content && stripHtml(item.content).trim().split(/\s+/).length > 150 ? readTime(item.content) : 'Read on Medium')}</span>
+        <span class="arr">→</span>
+      </div>`;
+    return a;
+  }
+
+  // ── Render the grid (respects active filter) ──────────────────────
+  function renderGrid() {
+    const grid   = document.getElementById('articles-grid');
+    const subset = activeFilter === 'all'
+      ? allArticles
+      : allArticles.filter(a => a._sport === activeFilter);
+
+    grid.innerHTML = '';
+
+    if (subset.length === 0) {
+      grid.innerHTML = `<div class="articles-empty">
+        No ${activeFilter} articles yet — <a href="https://gaffersnotebook.medium.com" target="_blank">read everything on Medium</a>
+      </div>`;
+      return;
+    }
+
+    // Number from newest (highest) to oldest (1), relative to full list
+    subset.forEach((item, i) => {
+      const globalNum = allArticles.length - allArticles.indexOf(item);
+      grid.appendChild(buildCard(item, globalNum));
+    });
+  }
+
+  // ── Update stat + section subtitle ───────────────────────────────
+  function updateStats(count) {
+    const el = document.getElementById('stat-articles');
+    if (el) el.textContent = String(count).padStart(2, '0');
+
+    const sub = document.getElementById('articles-sub');
+    if (sub) sub.textContent = `${count} piece${count !== 1 ? 's' : ''} on Medium`;
+  }
+
+  // ── Skeleton loading cards ────────────────────────────────────────
+  function showSkeletons() {
+    const skel = `
+      <div class="article">
+        <div class="article-top">
+          <div class="skel skel-sm"></div>
+          <div class="skel skel-tag"></div>
+        </div>
+        <div class="skel skel-title"></div>
+        <div class="skel skel-title" style="width:78%;margin-top:8px"></div>
+        <div class="skel skel-body" style="margin-top:16px"></div>
+        <div class="skel skel-body" style="width:88%"></div>
+        <div class="skel skel-body" style="width:65%"></div>
+      </div>`;
+    document.getElementById('articles-grid').innerHTML = skel + skel + skel;
+  }
+
+  // ── Static fallback if Medium is unreachable ──────────────────────
+  function loadFallback() {
+    allArticles = [
+      { title: "The Answer Was Always in the Building: Michael Carrick's Long Way Home", link: "https://gaffersnotebook.medium.com/the-answer-was-always-in-the-building-michael-carricks-long-way-home-090a74c8a069", pubDate: "2026-08-10", description: "Manchester United spent four years chasing other managers before turning back to Michael Carrick. What changed after his return, and why the sample is still small.", content: '', categories: ["Football", "Manchester United"], _sport: "football", _read: "9 min read" },
+      { title: "Why Audi Entering Formula 1 in 2026 Makes Perfect Sense", link: "https://gaffersnotebook.medium.com/why-audi-entering-formula-1-in-2026-makes-perfect-sense-1bd56aea613e", pubDate: "2025-11-22", description: "New regulations, a power-unit reset, and a brand looking for a stage. The strategic case for Audi in F1.", content: '', categories: ["Formula 1", "Motorsport"], _sport: "f1" },
+      { title: "The Ruben Amorim Verdict", link: "https://gaffersnotebook.medium.com/the-ruben-amorim-verdict-4a147903e7d8", pubDate: "2025-10-08", description: "Why United's problems run deeper than one manager, and the case for backing Amorim instead of repeating the sack-and-replace cycle.", content: '', categories: ["Football", "Manchester United"], _sport: "football", _read: "6 min read" },
+      { title: "How Greed, Power, and Silence Brought Indian Football to Its Knees", link: "https://gaffersnotebook.medium.com/how-greed-power-and-silence-brought-indian-football-to-its-knees-f9b30a14c355", pubDate: "2025-06-22", description: "A long, unflinching look at how the people meant to grow the Indian game ended up dismantling it instead.", content: '', categories: ["Football", "Indian Football"], _sport: "football" },
+      { title: "The AIFF-FSDL SAGA: The Gamble That Could Destroy Indian Football", link: "https://gaffersnotebook.medium.com/the-aiff-fsdl-saga-the-gamble-that-could-destroy-indian-football-841db003f2ee", pubDate: "2025-03-27", description: "Inside the contract standoff that put the future of the I-League, ISL and Indian football itself in the balance.", content: '', categories: ["Football", "Indian Football"], _sport: "football" },
+      { title: "Football a Game of Power? Unpacking City's 115 charges and their implications", link: "https://gaffersnotebook.medium.com/football-a-game-of-power-unpacking-citys-115-charges-and-their-implications-c7caa82736a5", pubDate: "2025-02-15", description: "What the charges actually allege and why the verdict will outlive the headlines.", content: '', categories: ["Football", "Premier League"], _sport: "football" },
+      { title: "Ruben Amorim's Revolution: Redefining Manchester United's Identity", link: "https://gaffersnotebook.medium.com/ruben-amorims-revolution-redefining-manchester-united-s-identity-ca2f5f373640", pubDate: "2024-11-21", description: "The 3-4-3, the principles, the rebuild \u2014 what Amorim's Sporting blueprint looks like.", content: '', categories: ["Football", "Manchester United"], _sport: "football" },
+      { title: "Technical Vs Tactical: Do Players Make the Tactics or Do Tactics Make the Players?", link: "https://gaffersnotebook.medium.com/technical-vs-tactical-do-players-make-the-tactics-or-do-tactics-make-the-players-da0fd7bde902", pubDate: "2024-11-07", description: "A chicken-and-egg question that football has argued about for sixty years \u2014 a column trying to settle it.", content: '', categories: ["Football", "Tactics"], _sport: "football" },
+    ];
+
+    updateStats(allArticles.length);
+    renderGrid();
+  }
+
+  // ── Main fetch ────────────────────────────────────────────────────
+  async function loadFeed() {
+    showSkeletons();
+    try {
+      const res  = await fetch(API_URL);
+      const data = await res.json();
+      if (data.status !== 'ok') throw new Error(data.message || 'Feed error');
+
+      allArticles = data.items.map(item => ({
+        ...item,
+        _sport: classifySport(item),
+      }));
+
+      updateStats(allArticles.length);
+      renderGrid();
+
+    } catch (err) {
+      console.warn('[Gaffers] Medium feed unavailable, using fallback:', err.message);
+      loadFallback();
+    }
+  }
+
+  // ── Filter buttons ────────────────────────────────────────────────
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      renderGrid();
+    });
+  });
+
+  // ── Scroll reveal ─────────────────────────────────────────────────
+  const revealIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section').forEach(s => {
+    s.style.opacity   = '0';
+    s.style.transform = 'translateY(28px)';
+    s.style.transition = 'opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+    revealIO.observe(s);
+  });
+
+  // ── Boot ──────────────────────────────────────────────────────────
+  loadFeed();
+</script>
+
+</body>
+</html>
